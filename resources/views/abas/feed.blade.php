@@ -2,18 +2,15 @@
     &nbsp;
     <div class="row">
         <div class="col">
-            <button class="btn btn-outline-primary btn-sm">Adicionar envelope</button>
+            @include('abas.modal.add-envelope')
         </div>
     </div>
     &nbsp;
     <div class="row">
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
-        <div class="col-sm-4">Saldo x: R$ 300,00</div>
+        <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>Saldo <span class="right">{{ $user->balance }}</span></button></div>
+        @foreach($envelopes as $envelope)
+            <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>{{ $envelope->name }}</button></div>
+        @endforeach
     </div>
 </div>
 

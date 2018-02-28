@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Envelope;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -26,6 +28,7 @@ class HomeController extends Controller
     {
         $envelopes = Envelope::all();
         return view('home')
-            ->withEnvelopes($envelopes);
+            ->withEnvelopes($envelopes)
+            ->withUser(User::find(Auth::id()));
     }
 }
