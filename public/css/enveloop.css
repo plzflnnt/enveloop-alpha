@@ -1,9 +1,5 @@
-/* The heart of the matter */
-.envelope-group > .row {
-    overflow-x: auto;
-    white-space: nowrap;
-}
-.envelope-group > .row > .col-xs-4 {
-    display: inline-block;
-    float: none;
-}
+/* Decorations */
+/*.envelope-group .col-sm-4 { color: #fff; }*/
+/*.envelope-group .col-sm-4:nth-child(3n+1) { background: #c69; }*/
+/*.envelope-group .col-sm-4:nth-child(3n+2) { background: #9c6; }*/
+/*.envelope-group .col-sm-4:nth-child(3n+3) { background: #69c; }*/
