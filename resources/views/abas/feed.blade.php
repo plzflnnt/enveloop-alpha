@@ -7,12 +7,22 @@
     </div>
     &nbsp;
     <div class="row">
-        <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>Saldo: <strong>R$ {{ $balance }}</strong></button></div>
+        <div class="col-12 col-sm-4">
+            <button class="btn btn-outline-primary btn-sm btn-block" disabled>Saldo: <strong
+                        style="color: <?= ($balance <= 0) ? '#dc3545' : '#28a745' ?>">R$ {{ $balance }}</strong>
+            </button>
+        </div>
         @foreach($envelopes as $envelope)
-            <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>{{ $envelope->name }}: <strong>R$: {{ $envelope->balance }}</strong></button></div>
+            <div class="col-12 col-sm-4">
+                <button class="btn btn-outline-primary btn-sm btn-block" disabled>{{ $envelope->name }}:
+                    <strong style="color: <?= ($envelope->balance <= 0) ? '#dc3545' : '#28a745' ?>">R$: {{ $envelope->balance }}</strong>
+                </button>
+            </div>
         @endforeach
         @if(count($envelopes) == 0)
-            <div class="col-12 col-sm-4"><button class="btn btn-outline-info btn-sm btn-block" disabled>Você não possui envelopes ainda!</button></div>
+            <div class="col-12 col-sm-4">
+                <button class="btn btn-outline-info btn-sm btn-block" disabled>Você não possui envelopes ainda!</button>
+            </div>
         @endif
 
     </div>

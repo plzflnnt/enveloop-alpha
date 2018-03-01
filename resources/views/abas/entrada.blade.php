@@ -29,15 +29,15 @@
             <table class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
-                        <td>Categoria</td>
-                        <td>Valor</td>
+                        <th>Categoria</th>
+                        <th>Valor</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($earnings as $earning)
                         <tr>
                             <td>{{ $earning->envelope }}</td>
-                            <td>{{ \App\Envelope::formatCurrency($earning->value) }}</td>
+                            <td><i class="fa fa-arrow-up" style="color: #28a745"></i> &nbsp;{{ \App\Envelope::formatCurrency($earning->value) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -48,15 +48,15 @@
             <table class="table table-sm">
                 <thead class="thead-dark">
                 <tr>
-                    <td>Data</td>
-                    <td>Valor</td>
+                    <th>Data</th>
+                    <th>Valor</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($balanceEarnings as $earning)
                     <tr>
                         <td>{{ $earning->updated_at }}</td>
-                        <td>{{ \App\Envelope::formatCurrency($earning->value) }}</td>
+                        <td><i class="fa fa-arrow-up" style="color: #28a745"></i> &nbsp;{{ \App\Envelope::formatCurrency($earning->value) }}</td>
                     </tr>
                 @endforeach
                 </tbody>
