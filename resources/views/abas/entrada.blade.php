@@ -23,6 +23,46 @@
             </div>
         </div>
     </form>
+    <div class="row">
+        <div class="col">
+            <p>Envelopes</p>
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <td>Categoria</td>
+                        <td>Valor</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($earnings as $earning)
+                        <tr>
+                            <td>{{ $earning->envelope }}</td>
+                            <td>{{ \App\Envelope::formatCurrency($earning->value) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <p>Saldo</p>
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                <tr>
+                    <td>Data</td>
+                    <td>Valor</td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($balanceEarnings as $earning)
+                    <tr>
+                        <td>{{ $earning->updated_at }}</td>
+                        <td>{{ \App\Envelope::formatCurrency($earning->value) }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script>

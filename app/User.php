@@ -47,9 +47,7 @@ class User extends Authenticatable
                 $sumEnvelopesBalance += $envelopeEarning->value;
             }
         }
-//        dd($sumEnvelopesBalance);
         $sum -= $sumEnvelopesBalance;
-
         if($sum == 0){
             return '0';
         }
