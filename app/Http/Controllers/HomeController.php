@@ -26,7 +26,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $envelopes = Envelope::all();
+        $envelopes = Envelope::where('user_id',Auth::id())->get();
+        $envelopesWithBalance = [];
+        foreach ($envelopes as $envelope){
+            $envelope->balance = Envelope::envelopeBalance($envelope->id);
+            $envelopesWithBalance[] = $envelope;
+        }
+
         return view('home')
             ->withEnvelopes($envelopes)
             ->withUser(User::find(Auth::id()));

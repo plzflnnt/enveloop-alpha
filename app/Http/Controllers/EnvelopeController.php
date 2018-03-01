@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Earning;
 use App\Envelope;
 use App\User;
 use Exception;
@@ -21,12 +22,35 @@ class EnvelopeController extends Controller
     }
 
     public function createEnvelope(Request $request){
-//        try{
+        try{
             $envelope = new Envelope();
             $envelope->name = $request->name;
             $envelope->style = $request->style;
             $envelope->user_id = Auth::id();
             $envelope->save();
+        }catch (Exception $e){
+            return $e->getMessage();
+        }
+        return redirect('/home');
+    }
+
+    public function createEarning(Request $request){
+//        try{
+            $earning = new Earning();
+            $earning->value = $request->value;
+            $earning->envelope_id = $request->envelope_id;
+            $earning->save();
+//        }catch (Exception $e){
+//            return $e->getMessage();
+//        }
+        return redirect('/home');
+    }
+    public function createExpense(Request $request){
+//        try{
+            $expense = new Earning();
+            $expense->value = $request->value;
+            $expense->envelope_id = $request->envelope_id;
+            $expense->save();
 //        }catch (Exception $e){
 //            return $e->getMessage();
 //        }
