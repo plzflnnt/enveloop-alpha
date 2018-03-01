@@ -7,7 +7,7 @@
     </div>
     &nbsp;
     <div class="row">
-        <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>Saldo: <strong>R$ {{ $user->balance }}</strong></button></div>
+        <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>Saldo: <strong>R$ {{ $balance }}</strong></button></div>
         @foreach($envelopes as $envelope)
             <div class="col-12 col-sm-4"><button class="btn btn-outline-primary btn-sm btn-block" disabled>{{ $envelope->name }}: <strong>R$: {{ $envelope->balance }}</strong></button></div>
         @endforeach

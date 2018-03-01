@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Earning;
+use App\EarningBalance;
 use App\Envelope;
+use App\Expense;
+use App\ExpenseBalance;
 use App\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -35,25 +38,39 @@ class EnvelopeController extends Controller
     }
 
     public function createEarning(Request $request){
-        try{
-            $earning = new Earning();
-            $earning->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-            $earning->envelope_id = $request->envelope_id;
-            $earning->save();
-        }catch (Exception $e){
-            return $e->getMessage();
-        }
+//        try{
+            if($request->envelope_id == 'sd'){
+                $changeBalance = new EarningBalance();
+                $changeBalance->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $changeBalance->user_id = Auth::id();
+                $changeBalance->save();
+            }else{
+                $earning = new Earning();
+                $earning->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $earning->envelope_id = $request->envelope_id;
+                $earning->save();
+            }
+//        }catch (Exception $e){
+//            return $e->getMessage();
+//        }
         return redirect('/home');
     }
     public function createExpense(Request $request){
-        try{
-            $expense = new Earning();
-            $expense->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-            $expense->envelope_id = $request->envelope_id;
-            $expense->save();
-        }catch (Exception $e){
-            return $e->getMessage();
-        }
+//        try{
+            if($request->envelope_id == 'sd'){
+                $changeBalance = new ExpenseBalance();
+                $changeBalance->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $changeBalance->user_id = Auth::id();
+                $changeBalance->save();
+            }else{
+                $expense = new Expense();
+                $expense->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $expense->envelope_id = $request->envelope_id;
+                $expense->save();
+            }
+//        }catch (Exception $e){
+//            return $e->getMessage();
+//        }
         return redirect('/home');
     }
 }

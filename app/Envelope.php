@@ -11,7 +11,7 @@ class Envelope extends Model
         $expenses = \App\Expense::where('envelope_id',$id)
             ->get();
         foreach ($expenses as $expense){
-            $sum += $expense->value;
+            $sum -= $expense->value;
         }
         $earnings = \App\Earning::where('envelope_id',$id)
             ->get();
@@ -21,5 +21,11 @@ class Envelope extends Model
         $sum = $sum/100;
         $sum = number_format($sum, 2, ',', ' ');
         return $sum;
+    }
+
+    public static function formatCurrency($value){
+        $value = $value/100;
+        $value = number_format($value, 2, ',', ' ');
+        return $value;
     }
 }

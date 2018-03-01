@@ -5,12 +5,13 @@
         <div class="form-row">
             <div class="col-12 col-md-5">
                 <div class="form-group">
-                    <input type="text" placeholder="Valor" class="form-control-sm" name="value">
+                    <input type="text" placeholder="Valor" class="form-control-sm form-control" name="value">
                 </div>
             </div>
             <div class="col-12 col-md-5">
                 <div class="form-group">
-                    <select class="form-control-sm" name="envelope_id">
+                    <select class="form-control-sm form-control" name="envelope_id">
+                        <option value="sd">Saldo</option>
                         @foreach($envelopes as $envelope)
                             <option value="{{ $envelope->id }}">{{ $envelope->name }}</option>
                         @endforeach

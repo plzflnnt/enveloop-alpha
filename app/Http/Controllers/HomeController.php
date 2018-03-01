@@ -32,9 +32,12 @@ class HomeController extends Controller
             $envelope->balance = Envelope::envelopeBalance($envelope->id);
             $envelopesWithBalance[] = $envelope;
         }
+        $user = User::find(Auth::id());
+        $balance = User::updatedBalance($user->id);
 
         return view('home')
             ->withEnvelopes($envelopes)
-            ->withUser(User::find(Auth::id()));
+            ->withUser($user)
+            ->withBalance($balance);
     }
 }
