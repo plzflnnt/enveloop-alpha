@@ -1,22 +1,25 @@
 <div class="earning-group">
     &nbsp;
-    <div class="row">
-        <form action="{{ url('new-expense') }}">
-            <div class="col">
+    <form class="form-earning-spense" method="post" action="{{ url('new-expense') }}">
+        @csrf
+        <div class="form-row">
+            <div class="col-12 col-md-5">
                 <div class="form-group">
-                    <label for="envelope">Valor</label>
-                    <input type="text" class="form-control" name="name">
+                    <input type="text" placeholder="Valor" class="form-control-sm" name="value">
                 </div>
             </div>
-            <div class="col">
+            <div class="col-12 col-md-5">
                 <div class="form-group">
-                    <select class="form-control" name="envelope_id">
+                    <select class="form-control-sm" name="envelope_id">
                         @foreach($envelopes as $envelope)
                             <option value="{{ $envelope->id }}">{{ $envelope->name }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="col-12 col-md-2">
+                <button type="submit" class="btn btn-outline-primary btn-sm">Adicionar</button>
+            </div>
+        </div>
+    </form>
 </div>

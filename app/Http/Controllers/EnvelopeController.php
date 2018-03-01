@@ -35,25 +35,25 @@ class EnvelopeController extends Controller
     }
 
     public function createEarning(Request $request){
-//        try{
+        try{
             $earning = new Earning();
-            $earning->value = $request->value;
+            $earning->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
             $earning->envelope_id = $request->envelope_id;
             $earning->save();
-//        }catch (Exception $e){
-//            return $e->getMessage();
-//        }
+        }catch (Exception $e){
+            return $e->getMessage();
+        }
         return redirect('/home');
     }
     public function createExpense(Request $request){
-//        try{
+        try{
             $expense = new Earning();
-            $expense->value = $request->value;
+            $expense->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
             $expense->envelope_id = $request->envelope_id;
             $expense->save();
-//        }catch (Exception $e){
-//            return $e->getMessage();
-//        }
+        }catch (Exception $e){
+            return $e->getMessage();
+        }
         return redirect('/home');
     }
 }

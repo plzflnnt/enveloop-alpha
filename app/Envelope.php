@@ -18,6 +18,8 @@ class Envelope extends Model
         foreach ($earnings as $earning){
             $sum += $earning->value;
         }
+        $sum = $sum/100;
+        $sum = number_format($sum, 2, ',', ' ');
         return $sum;
     }
 }
