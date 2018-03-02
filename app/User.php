@@ -29,12 +29,14 @@ class User extends Authenticatable
 
     public static function updatedBalance($id){
         $sum = 0;
-        $expenses = \App\ExpenseBalance::where('user_id',$id)
+        $expenses = \App\Feed::where('user_id',$id)
+            ->where('type',3)
             ->get();
         foreach ($expenses as $expense){
             $sum -= $expense->value;
         }
-        $earnings = \App\EarningBalance::where('user_id',$id)
+        $earnings = \App\Feed::where('user_id',$id)
+            ->where('type',1)
             ->get();
         foreach ($earnings as $earning){
             $sum += $earning->value;
@@ -42,7 +44,9 @@ class User extends Authenticatable
         $envelopes = Envelope::where('user_id',$id)->get();
         $sumEnvelopesBalance = 0;
         foreach ($envelopes as $envelope){
-            $envelopeEarnings = Earning::where('envelope_id', $envelope->id)->get();
+            $envelopeEarnings = Feed::where('envelope_id', $envelope->id)
+                ->where('type',2)
+                ->get();
             foreach ($envelopeEarnings as $envelopeEarning){
                 $sumEnvelopesBalance += $envelopeEarning->value;
             }

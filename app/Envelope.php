@@ -8,12 +8,14 @@ class Envelope extends Model
 {
     public static function envelopeBalance($id){
         $sum = 0;
-        $expenses = \App\Expense::where('envelope_id',$id)
+        $expenses = \App\Feed::where('envelope_id',$id)
+            ->where('type',4)
             ->get();
         foreach ($expenses as $expense){
             $sum -= $expense->value;
         }
-        $earnings = \App\Earning::where('envelope_id',$id)
+        $earnings = \App\Feed::where('envelope_id',$id)
+            ->where('type',2)
             ->get();
         foreach ($earnings as $earning){
             $sum += $earning->value;

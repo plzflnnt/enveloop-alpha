@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Earning;
 use App\EarningBalance;
 use App\Envelope;
+use App\Feed;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,23 +41,11 @@ class HomeController extends Controller
         $user = User::find(Auth::id());
         $balance = User::updatedBalance($user->id);
 
-        $earnings = DB::table('earnings')
-            ->whereIn('envelope_id',$envelopesIdArray)
-            ->join('envelopes', 'earnings.envelope_id', '=', 'envelopes.id')
-            ->select('earnings.*', 'envelopes.name as envelope')
-            ->get();
-        $balanceEarnings = DB::table('earning_balance')
-            ->where('user_id', $user->id)
+        $feed = Feed::where('feed.user_id', Auth::id())
+            ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
+            ->select('feed.*', 'envelopes.name as envelope')
             ->get();
 
-        $expenses = DB::table('expenses')
-            ->whereIn('envelope_id',$envelopesIdArray)
-            ->join('envelopes', 'expenses.envelope_id', '=', 'envelopes.id')
-            ->select('expenses.*', 'envelopes.name as envelope')
-            ->get();
-        $balanceExpenses = DB::table('expense_balance')
-            ->where('user_id', $user->id)
-            ->get();
         return view('home')
             ->withEnvelopes($envelopes)
             ->withUser($user)
@@ -64,6 +53,7 @@ class HomeController extends Controller
             ->withEarnings($earnings)
             ->withBalanceEarnings($balanceEarnings)
             ->withExpenses($expenses)
-            ->withBalanceExpenses($balanceExpenses);
+            ->withBalanceExpenses($balanceExpenses)
+            ->withFeed($feed);
     }
 }

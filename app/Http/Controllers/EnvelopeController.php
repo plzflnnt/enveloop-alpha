@@ -7,6 +7,7 @@ use App\EarningBalance;
 use App\Envelope;
 use App\Expense;
 use App\ExpenseBalance;
+use App\Feed;
 use App\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -14,6 +15,18 @@ use Illuminate\Support\Facades\Auth;
 
 class EnvelopeController extends Controller
 {
+
+    /*
+     *  Type of envelopes:
+     *
+     *  1- balance earning
+     *  2- earning on envelope
+     *  3- balance expense
+     *  4- expense on envelope
+     *
+     */
+
+
     /**
      * Create a new controller instance.
      *
@@ -40,15 +53,23 @@ class EnvelopeController extends Controller
     public function createEarning(Request $request){
 //        try{
             if($request->envelope_id == 'sd'){
-                $changeBalance = new EarningBalance();
-                $changeBalance->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $changeBalance->user_id = Auth::id();
-                $changeBalance->save();
+                //in case is a balance earning
+                $feed = new Feed();
+                $feed->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $feed->user_id = Auth::id();
+                $feed->envelope_id = 1;
+                $feed->type = 1;
+                $feed->name = $request->name;
+                $feed->save();
             }else{
-                $earning = new Earning();
-                $earning->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $earning->envelope_id = $request->envelope_id;
-                $earning->save();
+                //in case is an envelope earning
+                $feed = new Feed();
+                $feed->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $feed->envelope_id = $request->envelope_id;
+                $feed->user_id = Auth::id();
+                $feed->type = 2;
+                $feed->name = $request->name;
+                $feed->save();
             }
 //        }catch (Exception $e){
 //            return $e->getMessage();
@@ -58,15 +79,23 @@ class EnvelopeController extends Controller
     public function createExpense(Request $request){
 //        try{
             if($request->envelope_id == 'sd'){
-                $changeBalance = new ExpenseBalance();
-                $changeBalance->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $changeBalance->user_id = Auth::id();
-                $changeBalance->save();
+                //in case is a balance expense
+                $feed = new Feed();
+                $feed->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $feed->user_id = Auth::id();
+                $feed->envelope_id = 1;
+                $feed->type = 3;
+                $feed->name = $request->name;
+                $feed->save();
             }else{
-                $expense = new Expense();
-                $expense->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $expense->envelope_id = $request->envelope_id;
-                $expense->save();
+                //in case is an envelope expense
+                $feed = new Feed();
+                $feed->value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
+                $feed->envelope_id = $request->envelope_id;
+                $feed->user_id = Auth::id();
+                $feed->type = 4;
+                $feed->name = $request->name;
+                $feed->save();
             }
 //        }catch (Exception $e){
 //            return $e->getMessage();

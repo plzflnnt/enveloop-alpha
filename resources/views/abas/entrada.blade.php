@@ -2,13 +2,23 @@
     &nbsp;
     <form class="form-earning-spense" method="post" action="{{ url('new-earning') }}">
         @csrf
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="text-center">Adicionar despesa</p>
+            </div>
+        </div>
         <div class="form-row">
-            <div class="col-12 col-md-5">
+            <div class="col-12 col-md-4">
                 <div class="form-group">
+                    <input type="text" placeholder="Descrição" class="form-control-sm form-control" name="name">
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="form-group input-earning-spense">
                     <input type="text" placeholder="Valor" class="form-control-sm form-control" name="value">
                 </div>
             </div>
-            <div class="col-12 col-md-5">
+            <div class="col-12 col-md-3">
                 <div class="form-group">
                     <select class="form-control-sm form-control" name="envelope_id">
                         <option value="sd">Saldo</option>
@@ -19,50 +29,10 @@
                 </div>
             </div>
             <div class="col-12 col-md-2">
-                <button type="submit" class="btn btn-outline-primary btn-sm">Adicionar</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm btn-block">Adicionar</button>
             </div>
         </div>
     </form>
-    <div class="row">
-        <div class="col">
-            <p>Envelopes</p>
-            <table class="table table-sm">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Categoria</th>
-                        <th>Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($earnings as $earning)
-                        <tr>
-                            <td>{{ $earning->envelope }}</td>
-                            <td><i class="fa fa-arrow-up" style="color: #28a745"></i> &nbsp;{{ \App\Envelope::formatCurrency($earning->value) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="col">
-            <p>Saldo</p>
-            <table class="table table-sm">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Data</th>
-                    <th>Valor</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($balanceEarnings as $earning)
-                    <tr>
-                        <td>{{ $earning->updated_at }}</td>
-                        <td><i class="fa fa-arrow-up" style="color: #28a745"></i> &nbsp;{{ \App\Envelope::formatCurrency($earning->value) }}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -73,7 +43,7 @@
         // When ready.
         $(function() {
 
-            var $form = $( ".form-earning-spense" );
+            var $form = $( ".input-earning-spense" );
             var $input = $form.find( "input" );
 
             $input.on( "keyup", function( event ) {

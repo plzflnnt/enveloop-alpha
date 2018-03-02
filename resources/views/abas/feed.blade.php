@@ -27,4 +27,38 @@
 
     </div>
 </div>
+&nbsp;
+<hr>
+&nbsp;
+<div class="feed-group">
+    <div class="row">
+        <div class="col">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($feed as $item)
+                    <tr>
+                        <td>{{ $item->updated_at }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->envelope }}</td>
+                        <td><i class="fa fa-arrow-up" style="color: #28a745"></i> &nbsp;{{ \App\Envelope::formatCurrency($item->value) }}</td>
+                    </tr>
+                @endforeach
+                @if(count($feed) == 0)
+                    <tr>
+                        <td colspan="3" class="text-center">Tudo tão silêncioso por aqui 🌚</td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
