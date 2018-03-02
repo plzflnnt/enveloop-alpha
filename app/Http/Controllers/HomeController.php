@@ -50,10 +50,6 @@ class HomeController extends Controller
             ->withEnvelopes($envelopes)
             ->withUser($user)
             ->withBalance($balance)
-            ->withEarnings($earnings)
-            ->withBalanceEarnings($balanceEarnings)
-            ->withExpenses($expenses)
-            ->withBalanceExpenses($balanceExpenses)
             ->withFeed($feed);
     }
 }
