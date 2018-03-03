@@ -44,7 +44,8 @@ class HomeController extends Controller
         $feed = Feed::where('feed.user_id', Auth::id())
             ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
             ->select('feed.*', 'envelopes.name as envelope')
-            ->get();
+            ->orderBy('updated_at','desc')
+            ->paginate(20);
 
         return view('home')
             ->withEnvelopes($envelopes)

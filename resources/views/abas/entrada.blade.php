@@ -4,7 +4,10 @@
         @csrf
         <div class="row">
             <div class="col-xs-12">
-                <p class="text-center">Adicionar despesa</p>
+                <p class="text-center">Adicionar ganho: Adicione uma entrada de dinheiro em seu saldo ou em um dos seus
+                    envelopes<br>Obs.: Adicione seu salário primeiramente ao saldo, quando você adiciona um valor a um
+                    envelope ele é retirado do seu saldo e transferido ao envelope, não é possível adicionar um valor
+                    direto ao envelope no momento.</p>
             </div>
         </div>
         <div class="form-row">
@@ -36,44 +39,44 @@
 </div>
 
 <script>
-    (function($, undefined) {
+    (function ($, undefined) {
 
         "use strict";
 
         // When ready.
-        $(function() {
+        $(function () {
 
-            var $form = $( ".input-earning-spense" );
-            var $input = $form.find( "input" );
+            var $form = $(".input-earning-spense");
+            var $input = $form.find("input");
 
-            $input.on( "keyup", function( event ) {
+            $input.on("keyup", function (event) {
 
 
                 // When user select text in the document, also abort.
                 var selection = window.getSelection().toString();
-                if ( selection !== '' ) {
+                if (selection !== '') {
                     return;
                 }
 
                 // When the arrow keys are pressed, abort.
-                if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
                     return;
                 }
 
 
-                var $this = $( this );
+                var $this = $(this);
 
                 // Get the value.
                 var input = $this.val();
 
                 var input = input.replace(/[\D\s\._\-]+/g, "");
-                input = input ? parseInt( input, 10 ) : 0;
+                input = input ? parseInt(input, 10) : 0;
 
-                $this.val( function() {
-                    var valuefinal = ( input === 0 ) ? "" : input/100;
-                    return valuefinal.toLocaleString("pt-BR", {style:"currency", currency:"BRL"})
-                } );
-            } );
+                $this.val(function () {
+                    var valuefinal = (input === 0) ? "" : input / 100;
+                    return valuefinal.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})
+                });
+            });
         });
     })(jQuery);
 </script>

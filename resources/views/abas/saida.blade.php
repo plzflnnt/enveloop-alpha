@@ -4,7 +4,7 @@
         @csrf
         <div class="row">
             <div class="col-xs-12">
-                <p class="text-center">Adicionar despesa</p>
+                <p class="text-center">Adicionar despesa: adicione uma despesa e de qual fonte você ira retirar o valor.</p>
             </div>
         </div>
         <div class="form-row">

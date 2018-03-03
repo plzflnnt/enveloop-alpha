@@ -9,6 +9,7 @@ use App\Expense;
 use App\ExpenseBalance;
 use App\Feed;
 use App\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +61,7 @@ class EnvelopeController extends Controller
                 $feed->envelope_id = 1;
                 $feed->type = 1;
                 $feed->name = $request->name;
+                $feed->valid_at = Carbon::now();
                 $feed->save();
             }else{
                 //in case is an envelope earning
@@ -69,6 +71,7 @@ class EnvelopeController extends Controller
                 $feed->user_id = Auth::id();
                 $feed->type = 2;
                 $feed->name = $request->name;
+                $feed->valid_at = Carbon::now();
                 $feed->save();
             }
 //        }catch (Exception $e){
@@ -86,6 +89,7 @@ class EnvelopeController extends Controller
                 $feed->envelope_id = 1;
                 $feed->type = 3;
                 $feed->name = $request->name;
+                $feed->valid_at = Carbon::now();
                 $feed->save();
             }else{
                 //in case is an envelope expense
@@ -95,6 +99,7 @@ class EnvelopeController extends Controller
                 $feed->user_id = Auth::id();
                 $feed->type = 4;
                 $feed->name = $request->name;
+                $feed->valid_at = Carbon::now();
                 $feed->save();
             }
 //        }catch (Exception $e){

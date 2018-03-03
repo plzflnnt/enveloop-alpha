@@ -36,19 +36,42 @@
             <table class="table table-sm">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Data</th>
+                    <th>Valor</th>
                     <th>Descrição</th>
                     <th>Categoria</th>
-                    <th>Valor</th>
+                    <th>Data</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($feed as $item)
+                    <?
+                    $style = "";
+                    if($item->type == 1 ){
+                        $style = "fa-arrow-up";
+                    }elseif($item->type == 2 ){
+                        $style = "fa-arrow-up";
+                    }elseif($item->type == 4){
+                        $style = "fa-arrow-down";
+                    }elseif($item->type == 3 ){
+                        $style = "fa-arrow-down";
+                    }
+                    $color = "";
+                    if($item->type == 1 ) {
+                        $color = "#28a745";
+                    }elseif($item->type ==  2){
+                        $color = "#28a745";
+                    }elseif($item->type ==  3){
+                        $color = "#dc3545";
+                    }elseif($item->type ==  4){
+                        $color = "#dc3545";
+                    }
+                    ?>
                     <tr>
-                        <td>{{ $item->updated_at }}</td>
+                        <td><i class="fa {{ $style }}" style="color: {{ $color }}"></i>
+                            &nbsp;R$ {{ \App\Envelope::formatCurrency($item->value) }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->envelope }}</td>
-                        <td><i class="fa fa-arrow-up" style="color: #28a745"></i> &nbsp;{{ \App\Envelope::formatCurrency($item->value) }}</td>
+                        <td>{{ date('d/m/y H:i'), strtotime($item->updated_at) }}</td>
                     </tr>
                 @endforeach
                 @if(count($feed) == 0)
@@ -58,6 +81,7 @@
                 @endif
                 </tbody>
             </table>
+            {{ $feed->links() }}
         </div>
     </div>
 </div>

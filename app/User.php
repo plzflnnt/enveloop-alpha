@@ -31,12 +31,14 @@ class User extends Authenticatable
         $sum = 0;
         $expenses = \App\Feed::where('user_id',$id)
             ->where('type',3)
+            ->where('user_id',$id)
             ->get();
         foreach ($expenses as $expense){
             $sum -= $expense->value;
         }
         $earnings = \App\Feed::where('user_id',$id)
             ->where('type',1)
+            ->where('user_id',$id)
             ->get();
         foreach ($earnings as $earning){
             $sum += $earning->value;
