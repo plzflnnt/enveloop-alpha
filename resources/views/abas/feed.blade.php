@@ -65,13 +65,14 @@
                     }elseif($item->type ==  4){
                         $color = "#dc3545";
                     }
+                    date_default_timezone_set('America/Sao_Paulo');
                     ?>
                     <tr>
                         <td><i class="fa {{ $style }}" style="color: {{ $color }}"></i>
                             &nbsp;R$ {{ \App\Envelope::formatCurrency($item->value) }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->envelope }}</td>
-                        <td>{{ date('d/m/y H:i'), strtotime($item->updated_at) }}</td>
+                        <td>{{ date('d/m/y H:i', strtotime($item->updated_at)) }}</td>
                     </tr>
                 @endforeach
                 @if(count($feed) == 0)
@@ -85,4 +86,51 @@
         </div>
     </div>
 </div>
+<div class="graphic-group">
+    <div class="row">
+        <div class="col-12">
+            <div id="piechart"></div>
+        </div>
+        <div class="col-12">
+            <div id="columnChart"></div>
+        </div>
+    </div>
+</div>
+<script>
+    // Load google charts
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
 
+    // Draw the chart and set the chart values
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Envelope', 'Gasto'],
+            @foreach($pieOne as $item)
+                    ['{{ $item->name }}', {{$item->expenses}}],
+            @endforeach
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        var options = {'title':'Gastos por envelope', 'height':400};
+
+        // Display the chart inside the <div> element with id="piechart"
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+
+        data = google.visualization.arrayToDataTable([
+            ['Envelope', 'Investimento', 'Gasto'],
+                @foreach($pieOne as $item)
+            ['{{ $item->name }}', {{$item->balance}}, {{$item->expenses}}],
+            @endforeach
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        options = {'title':'Aplicação / Gastos', 'height':400};
+
+        // Display the chart inside the <div> element with id="piechart"
+        chart = new google.visualization.ColumnChart(document.getElementById('columnChart'));
+        chart.draw(data, options);
+    }
+
+
+</script>

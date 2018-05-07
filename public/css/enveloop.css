@@ -6,3 +6,7 @@
 #nav-home > div.envelope-group > div > div > button{
     margin-bottom: 5px;
 }
+.chart {
+    width: 100%;
+    min-height: 450px;
+}

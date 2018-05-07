@@ -34,6 +34,19 @@
             <div class="col-12 col-md-2">
                 <button type="submit" class="btn btn-outline-primary btn-sm btn-block">Adicionar</button>
             </div>
+            {{--<div class="form-row">--}}
+                {{--<div class="col-md-4 col-12">--}}
+                    {{--<div class="form-group">--}}
+                        {{--<select class="form-control-sm form-control" name="envelope_id">--}}
+                            {{--<option value="10">Adiar 10 dias</option>--}}
+                            {{--<option value="15">{{ $envelope->name }}</option>--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="col-md-4 col-12">--}}
+
+                {{--</div>--}}
+            {{--</div>--}}
         </div>
     </form>
 </div>
