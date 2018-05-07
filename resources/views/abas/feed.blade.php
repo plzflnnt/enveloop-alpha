@@ -88,49 +88,66 @@
 </div>
 <div class="graphic-group">
     <div class="row">
-        <div class="col-12">
-            <div id="piechart"></div>
+        @foreach($reportOne as $envelope)
+        <div class="col-12 col-sm-6 col-md-4">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col" colspan="3">{{ $envelope->name }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?
+                    $shortHistory = \App\Feed::shortHistory($envelope->id);
+                    $shortHistorySpent = \App\Feed::shortHistoryExpenses($envelope->id)
+                ?>
+                @foreach($shortHistory as $item)
+                    <?
+                    $style = "";
+                    if($item->type == 1 ){
+                        $style = "fa-arrow-up";
+                    }elseif($item->type == 2 ){
+                        $style = "fa-arrow-up";
+                    }elseif($item->type == 4){
+                        $style = "fa-arrow-down";
+                    }elseif($item->type == 3 ){
+                        $style = "fa-arrow-down";
+                    }
+                    $color = "";
+                    if($item->type == 1 ) {
+                        $color = "#28a745";
+                    }elseif($item->type ==  2){
+                        $color = "#28a745";
+                    }elseif($item->type ==  3){
+                        $color = "#dc3545";
+                    }elseif($item->type ==  4){
+                        $color = "#dc3545";
+                    }
+                    date_default_timezone_set('America/Sao_Paulo');
+                    ?>
+                    <tr>
+                        <th scope="row"  data-toggle="tooltip" data-placement="top" title="{{ $item->name }}">
+                            <i class="fa {{ $style }}" style="color: {{ $color }}"></i>
+                            &nbsp;R$ {{ \App\Envelope::formatCurrency($item->value) }}
+                        </th>
+                        <td>{{ date('d/m', strtotime($item->updated_at)) }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            <div class="progress">
+
+                <?
+                    $percentbalance = ($envelope->balance * 100) / ($envelope->balance + $shortHistorySpent);
+                    $percentspent = ($shortHistorySpent * 100) / ($envelope->balance + $shortHistorySpent)
+                ?>
+
+                <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $percentspent }}%" aria-valuenow="{{ $percentspent }}" aria-valuemin="0" aria-valuemax="100">{{ \App\Envelope::formatCurrency($shortHistorySpent) }}</div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $percentbalance }}%" aria-valuenow="{{ $percentbalance }}" aria-valuemin="0" aria-valuemax="100">{{ \App\Envelope::formatCurrency($envelope->balance) }}</div>
+            </div>
+            <br>
         </div>
-        <div class="col-12">
-            <div id="columnChart"></div>
-        </div>
+        @endforeach
     </div>
 </div>
-<script>
-    // Load google charts
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
 
-    // Draw the chart and set the chart values
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Envelope', 'Gasto'],
-            @foreach($pieOne as $item)
-                    ['{{ $item->name }}', {{$item->expenses}}],
-            @endforeach
-        ]);
-
-        // Optional; add a title and set the width and height of the chart
-        var options = {'title':'Gastos por envelope', 'height':400};
-
-        // Display the chart inside the <div> element with id="piechart"
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
-
-        data = google.visualization.arrayToDataTable([
-            ['Envelope', 'Investimento', 'Gasto'],
-                @foreach($pieOne as $item)
-            ['{{ $item->name }}', {{$item->balance}}, {{$item->expenses}}],
-            @endforeach
-        ]);
-
-        // Optional; add a title and set the width and height of the chart
-        options = {'title':'Aplicação / Gastos', 'height':400};
-
-        // Display the chart inside the <div> element with id="piechart"
-        chart = new google.visualization.ColumnChart(document.getElementById('columnChart'));
-        chart.draw(data, options);
-    }
-
-
-</script>

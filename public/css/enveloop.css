@@ -10,3 +10,8 @@
     width: 100%;
     min-height: 450px;
 }
+
+.graphic-group .table td,
+.graphic-group .table th{
+    font-size: 8pt!important;
+}

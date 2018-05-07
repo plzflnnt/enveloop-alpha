@@ -27,6 +27,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    //recebe o id do usuário logado e retorna uma string com o saldo geral em formato para view
     public static function updatedBalance($id){
         $sum = 0;
         $expenses = \App\Feed::where('user_id',$id)

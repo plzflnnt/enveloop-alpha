@@ -52,6 +52,6 @@ class HomeController extends Controller
             ->withUser($user)
             ->withBalance($balance)
             ->withFeed($feed)
-            ->withPieOne(Envelope::envelopesExpense());
+            ->withReportOne(Envelope::envelopesExpense());
     }
 }

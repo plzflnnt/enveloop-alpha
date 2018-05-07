@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Envelope extends Model
 {
+    //recebe o id do envelope e retorna o saldo do envelope em uma string para view
     public static function envelopeBalance($id){
         $sum = 0;
         $expenses = \App\Feed::where('envelope_id',$id)
@@ -26,6 +27,7 @@ class Envelope extends Model
         return $sum;
     }
 
+    //FUNÇÃO COMPLEMENTAR DE envelopeEarnings() - recebe o id do envelope e retorna soma em int dos ganhos do envelope
     public static function envelopeEarnings($id){
         $sum = 0;
 //        $expenses = \App\Feed::where('envelope_id',$id)
@@ -43,6 +45,12 @@ class Envelope extends Model
         return $sum;
     }
 
+    /*
+     * Rerotna um array de envelopes do usuário logado com:
+     *   -todos os dados do envelope
+     *   -saldo do envelope até o momento
+     *   -investimento até o momento
+     */
     public static function envelopesExpense(){
 
         $envelopes = Envelope::where('user_id',Auth::id())
@@ -57,12 +65,13 @@ class Envelope extends Model
                 $sum += $expense->value;
             }
             $envelope->expenses = $sum;
-            $envelope->balance = Envelope::envelopeEarnings($envelope->id);
+            $envelope->balance = Envelope::envelopeEarnings($envelope->id) - $sum;
             $arrayOfEnvelopes[] = $envelope;
         }
         return $arrayOfEnvelopes;
     }
 
+    //recebe um valor inteiro de dinheiro e retorna no formatado em string para view
     public static function formatCurrency($value){
         $value = $value/100;
         $value = number_format($value, 2, ',', ' ');
