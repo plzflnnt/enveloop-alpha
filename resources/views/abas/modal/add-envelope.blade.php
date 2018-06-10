@@ -1,7 +1,9 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
-    Adicionar envelope
-</button>
+<div class="col-12 col-sm-4">
+    <button type="button" class="btn btn-outline-primary btn-sm btn-block" data-toggle="modal" data-target="#exampleModalCenter">
+         Adicionar envelope <i class="fa fa-plus-circle" style="font-weight: lighter;font-size: 10pt;"></i>
+    </button>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"

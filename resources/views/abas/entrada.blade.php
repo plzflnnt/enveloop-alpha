@@ -24,7 +24,6 @@
             <div class="col-12 col-md-3">
                 <div class="form-group">
                     <select class="form-control-sm form-control" name="envelope_id">
-                        <option value="sd">Saldo</option>
                         @foreach($envelopes as $envelope)
                             <option value="{{ $envelope->id }}">{{ $envelope->name }}</option>
                         @endforeach

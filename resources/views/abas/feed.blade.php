@@ -2,94 +2,39 @@
     &nbsp;
     <div class="row">
         <div class="col">
-            @include('abas.modal.add-envelope')
+            @include('abas.modal.add-earning-to-balance')
         </div>
     </div>
+
     &nbsp;
     <div class="row">
-        <div class="col-12 col-sm-4">
-            <button class="btn btn-outline-primary btn-sm btn-block" disabled>Saldo: <strong
-                        style="color: <?= ($balance <= 0) ? '#dc3545' : '#28a745' ?>">R$ {{ $balance }}</strong>
-            </button>
-        </div>
+
+        @if(count($envelopes) == 0)
+            <div class="col-12 col-sm-4">
+                <button class="btn btn-outline-info btn-sm btn-block" disabled>Nenhum envelope criado ainda!</button>
+            </div>
+        @endif
         @foreach($envelopes as $envelope)
             <div class="col-12 col-sm-4">
                 <button class="btn btn-outline-primary btn-sm btn-block" disabled>{{ $envelope->name }}:
-                    <strong style="color: <?= ($envelope->balance <= 0) ? '#dc3545' : '#28a745' ?>">R$: {{ $envelope->balance }}</strong>
+                    <strong style="color: <?= ($envelope->balance <= 0) ? '#f2756a' : '#89e17a' ?>">R$: {{ $envelope->balance }}</strong>
                 </button>
             </div>
         @endforeach
-        @if(count($envelopes) == 0)
-            <div class="col-12 col-sm-4">
-                <button class="btn btn-outline-info btn-sm btn-block" disabled>Você não possui envelopes ainda!</button>
-            </div>
-        @endif
+            @include('abas.modal.add-envelope')
+
 
     </div>
 </div>
 &nbsp;
 <hr>
 &nbsp;
-<div class="feed-group">
-    <div class="row">
-        <div class="col">
-            <table class="table table-sm">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Valor</th>
-                    <th>Descrição</th>
-                    <th>Categoria</th>
-                    <th>Data</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($feed as $item)
-                    <?
-                    $style = "";
-                    if($item->type == 1 ){
-                        $style = "fa-arrow-up";
-                    }elseif($item->type == 2 ){
-                        $style = "fa-arrow-up";
-                    }elseif($item->type == 4){
-                        $style = "fa-arrow-down";
-                    }elseif($item->type == 3 ){
-                        $style = "fa-arrow-down";
-                    }
-                    $color = "";
-                    if($item->type == 1 ) {
-                        $color = "#28a745";
-                    }elseif($item->type ==  2){
-                        $color = "#28a745";
-                    }elseif($item->type ==  3){
-                        $color = "#dc3545";
-                    }elseif($item->type ==  4){
-                        $color = "#dc3545";
-                    }
-                    date_default_timezone_set('America/Sao_Paulo');
-                    ?>
-                    <tr>
-                        <td><i class="fa {{ $style }}" style="color: {{ $color }}"></i>
-                            &nbsp;R$ {{ \App\Envelope::formatCurrency($item->value) }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->envelope }}</td>
-                        <td>{{ date('d/m/y H:i', strtotime($item->updated_at)) }}</td>
-                    </tr>
-                @endforeach
-                @if(count($feed) == 0)
-                    <tr>
-                        <td colspan="3" class="text-center">Tudo tão silêncioso por aqui 🌚</td>
-                    </tr>
-                @endif
-                </tbody>
-            </table>
-            {{ $feed->links() }}
-        </div>
-    </div>
-</div>
 <div class="graphic-group">
+    <p><small>Últimos 30 dias</small></p>
+
     <div class="row">
         @foreach($reportOne as $envelope)
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6 col-md-4 envelope-color-{{ $envelope->style }}">
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
@@ -115,13 +60,13 @@
                     }
                     $color = "";
                     if($item->type == 1 ) {
-                        $color = "#28a745";
+                        $color = "#89e17a";
                     }elseif($item->type ==  2){
-                        $color = "#28a745";
+                        $color = "#89e17a";
                     }elseif($item->type ==  3){
-                        $color = "#dc3545";
+                        $color = "#f2756a";
                     }elseif($item->type ==  4){
-                        $color = "#dc3545";
+                        $color = "#f2756a";
                     }
                     date_default_timezone_set('America/Sao_Paulo');
                     ?>
@@ -133,6 +78,16 @@
                         <td>{{ date('d/m', strtotime($item->updated_at)) }}</td>
                     </tr>
                 @endforeach
+                @if(count($shortHistory)==2)
+                    <tr>
+                        <th colspan="2" style="height: 28px"></th>
+                    </tr>
+                @endif
+                @if(count($shortHistory)==0)
+                    <tr>
+                        <th colspan="2" style="height: 84px">Opa! Nenhuma transação recente</th>
+                    </tr>
+                @endif
                 </tbody>
             </table>
             <div class="progress">
@@ -142,8 +97,8 @@
                     $percentspent = ($shortHistorySpent * 100) / ($envelope->balance + $shortHistorySpent)
                 ?>
 
-                <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $percentspent }}%" aria-valuenow="{{ $percentspent }}" aria-valuemin="0" aria-valuemax="100">{{ \App\Envelope::formatCurrency($shortHistorySpent) }}</div>
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $percentbalance }}%" aria-valuenow="{{ $percentbalance }}" aria-valuemin="0" aria-valuemax="100">{{ \App\Envelope::formatCurrency($envelope->balance) }}</div>
+                <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $percentspent }}%" aria-valuenow="{{ $percentspent }}" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="R$ {{ \App\Envelope::formatCurrency($shortHistorySpent) }}">{{ \App\Envelope::formatCurrency($shortHistorySpent) }}</div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $percentbalance }}%" aria-valuenow="{{ $percentbalance }}" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="R$ {{ \App\Envelope::formatCurrency($envelope->balance) }}">{{ \App\Envelope::formatCurrency($envelope->balance) }}</div>
             </div>
             <br>
         </div>

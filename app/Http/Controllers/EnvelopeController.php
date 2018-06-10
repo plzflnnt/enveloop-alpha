@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class EnvelopeController extends Controller
 {
@@ -63,6 +64,9 @@ class EnvelopeController extends Controller
                 $feed->name = $request->name;
                 $feed->valid_at = Carbon::now();
                 $feed->save();
+
+                $mensagem = 'Você inseriu '.$request->value.' ao seu saldo não alocado. <a href="'.url('undo-earning/'.encrypt($feed->id)).'" class="alert-link">Desfazer</a>';
+                Session::flash('flash_message', $mensagem);
             }else{
                 //in case is an envelope earning
                 $feed = new Feed();
@@ -73,10 +77,15 @@ class EnvelopeController extends Controller
                 $feed->name = $request->name;
                 $feed->valid_at = Carbon::now();
                 $feed->save();
+
+                $envelope = Envelope::find($request->envelope_id);
+                $mensagem = 'Você inseriu '.$request->value.' ao envelope '.$envelope->name.'. <a href="'.url('undo-earning/'.encrypt($feed->id)).'" class="alert-link">Desfazer</a>';
+                Session::flash('flash_message', $mensagem);
             }
 //        }catch (Exception $e){
 //            return $e->getMessage();
 //        }
+
         return redirect('/home');
     }
     public function createExpense(Request $request){
@@ -105,6 +114,13 @@ class EnvelopeController extends Controller
 //        }catch (Exception $e){
 //            return $e->getMessage();
 //        }
+        return redirect('/home');
+    }
+
+    public function undoEarning($id){
+
+        $id = decrypt($id);
+        Session::flash('flash_message', 'Você desfez a última aplicação');
         return redirect('/home');
     }
 }

@@ -17,13 +17,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#message-home").fadeTo(40000, 500).slideUp(500, function(){
-                $("#message-home").slideUp(500);
-            });
-        });
-    </script>
+    <script src="{{ asset('js/enveloop.js') }}"></script>
 
 </head>
 <body>
@@ -31,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Envel∞p') }} - <span style="color: red">VERSÃO DE TESTES</span>
+                    {{ config('app.name', 'Envel∞p') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -80,10 +74,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
+
 </body>
 </html>

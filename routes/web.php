@@ -21,5 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/new-envelope', 'EnvelopeController@createEnvelope')->name('home');
 Route::post('/new-earning', 'EnvelopeController@createEarning')->name('home');
 Route::post('/new-expense', 'EnvelopeController@createExpense')->name('home');
+Route::get('/undo-earning/{id}', 'EnvelopeController@undoEarning')->name('home');
 
 

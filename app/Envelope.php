@@ -48,8 +48,8 @@ class Envelope extends Model
     /*
      * Rerotna um array de envelopes do usuário logado com:
      *   -todos os dados do envelope
-     *   -saldo do envelope até o momento
-     *   -investimento até o momento
+     *   -saldo do envelope até o momento  e.g. $x->balance
+     *   -investimento até o momento e.g. $x->expenses
      */
     public static function envelopesExpense(){
 
