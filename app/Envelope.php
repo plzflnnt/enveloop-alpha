@@ -2,33 +2,36 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Envelope extends Model
 {
     //recebe o id do envelope e retorna o saldo do envelope em uma string para view
-    public static function envelopeBalance($id){
+    public static function envelopeBalance($id)
+    {
         $sum = 0;
-        $expenses = \App\Feed::where('envelope_id',$id)
-            ->where('type',4)
+        $expenses = \App\Feed::where('envelope_id', $id)
+            ->where('type', 4)
             ->get();
-        foreach ($expenses as $expense){
+        foreach ($expenses as $expense) {
             $sum -= $expense->value;
         }
-        $earnings = \App\Feed::where('envelope_id',$id)
-            ->where('type',2)
+        $earnings = \App\Feed::where('envelope_id', $id)
+            ->where('type', 2)
             ->get();
-        foreach ($earnings as $earning){
+        foreach ($earnings as $earning) {
             $sum += $earning->value;
         }
-        $sum = $sum/100;
+        $sum = $sum / 100;
         $sum = number_format($sum, 2, ',', ' ');
         return $sum;
     }
 
     //FUNÇÃO COMPLEMENTAR DE envelopeEarnings() - recebe o id do envelope e retorna soma em int dos ganhos do envelope
-    public static function envelopeEarnings($id){
+    public static function envelopeEarnings($id)
+    {
         $sum = 0;
 //        $expenses = \App\Feed::where('envelope_id',$id)
 //            ->where('type',4)
@@ -36,10 +39,10 @@ class Envelope extends Model
 //        foreach ($expenses as $expense){
 //            $sum -= $expense->value;
 //        }
-        $earnings = \App\Feed::where('envelope_id',$id)
-            ->where('type',2)
+        $earnings = \App\Feed::where('envelope_id', $id)
+            ->where('type', 2)
             ->get();
-        foreach ($earnings as $earning){
+        foreach ($earnings as $earning) {
             $sum += $earning->value;
         }
         return $sum;
@@ -51,17 +54,18 @@ class Envelope extends Model
      *   -saldo do envelope até o momento  e.g. $x->balance
      *   -investimento até o momento e.g. $x->expenses
      */
-    public static function envelopesExpense(){
+    public static function envelopesExpense()
+    {
 
-        $envelopes = Envelope::where('user_id',Auth::id())
+        $envelopes = Envelope::where('user_id', Auth::id())
             ->get();
         $arrayOfEnvelopes = [];
-        foreach ($envelopes as $envelope){
-            $expenses = Feed::whereIn('type',[3,4])
-            ->where('envelope_id', $envelope->id)
-            ->get();
+        foreach ($envelopes as $envelope) {
+            $expenses = Feed::whereIn('type', [3, 4])
+                ->where('envelope_id', $envelope->id)
+                ->get();
             $sum = 0;
-            foreach ($expenses as $expense){
+            foreach ($expenses as $expense) {
                 $sum += $expense->value;
             }
             $envelope->expenses = $sum;
@@ -72,9 +76,155 @@ class Envelope extends Model
     }
 
     //recebe um valor inteiro de dinheiro e retorna no formatado em string para view
-    public static function formatCurrency($value){
-        $value = $value/100;
+    public static function formatCurrency($value)
+    {
+        $value = $value / 100;
         $value = number_format($value, 2, ',', ' ');
         return $value;
     }
+
+    //recebe um valor em string para view de dinheiro e retorna no formatado inteiro
+    public static function formatNumber($value)
+    {
+        $value = str_replace(' ', '', $value);
+        $value = str_replace(',', '', $value);
+        $value = intval($value);
+        return $value;
+    }
+
+    /*
+     * Função que retorna o balanço mês a mês de todos os evelopes do usuário em array
+     * [report -> month, spent, earned, name, envelope_id]
+     */
+    public static function userMothsReport()
+    {
+        $envelopes = Envelope::where("user_id", Auth::id())->get();
+
+        foreach ($envelopes as $envelope) {
+            $now = Carbon::now();
+            $now->setTimezone('America/Sao_Paulo');
+
+            $dataArray = [];
+            //esse mês
+            $balanceSpent = 0;
+            $balanceEarn = 0;
+            $feeds = Feed::where("envelope_id", $envelope->id)
+                ->whereMonth('created_at', $now->month)
+                ->get();
+
+            foreach ($feeds as $feed) {
+                if ($feed->type == 2) {
+                    $balanceEarn += $feed->value;
+                } elseif ($feed->type == 4) {
+                    $balanceSpent += $feed->value;
+                }
+            }
+            $dataArray[] = array(
+                "spent" => $balanceSpent,
+                "earn" => $balanceEarn,
+                "month" => $now->month,
+            );
+
+
+            //mes passado
+            $balanceSpent = 0;
+            $balanceEarn = 0;
+            $feeds = Feed::where("envelope_id", $envelope->id)
+                ->whereMonth('created_at', $now->subMonth()->month)
+                ->get();
+
+            foreach ($feeds as $feed) {
+                if ($feed->type == 2) {
+                    $balanceEarn += $feed->value;
+                } elseif ($feed->type == 4) {
+                    $balanceSpent += $feed->value;
+                }
+
+            }
+            $dataArray[] = array(
+                "spent" => $balanceSpent,
+                "earn" => $balanceEarn,
+                "month" => $now->month
+            );
+
+            //mes retrasado
+            $balanceSpent = 0;
+            $balanceEarn = 0;
+            $feeds = Feed::where("envelope_id", $envelope->id)
+                ->whereMonth('created_at', $now->subMonth()->month)
+                ->get();
+
+            foreach ($feeds as $feed) {
+                if ($feed->type == 2) {
+                    $balanceEarn += $feed->value;
+                } elseif ($feed->type == 4) {
+                    $balanceSpent += $feed->value;
+                }
+            }
+            $dataArray[] = array(
+                "spent" => $balanceSpent,
+                "earn" => $balanceEarn,
+                "month" => $now->month
+            );
+
+            //3 meses atras
+            $balanceSpent = 0;
+            $balanceEarn = 0;
+            $feeds = Feed::where("envelope_id", $envelope->id)
+                ->whereMonth('created_at', $now->subMonth()->month)
+                ->get();
+
+            foreach ($feeds as $feed) {
+                if ($feed->type == 2) {
+                    $balanceEarn += $feed->value;
+                } elseif ($feed->type == 4) {
+                    $balanceSpent += $feed->value;
+                }
+            }
+            $dataArray[] = array(
+                "spent" => $balanceSpent,
+                "earn" => $balanceEarn,
+                "month" => $now->month
+            );
+
+            //4 meses atras
+            $balanceSpent = 0;
+            $balanceEarn = 0;
+            $feeds = Feed::where("envelope_id", $envelope->id)
+                ->whereMonth('created_at', $now->subMonth()->month)
+                ->get();
+
+            foreach ($feeds as $feed) {
+                if ($feed->type == 2) {
+                    $balanceEarn += $feed->value;
+                } elseif ($feed->type == 4) {
+                    $balanceSpent += $feed->value;
+                }
+            }
+            $dataArray[] = array(
+                "spent" => $balanceSpent,
+                "earn" => $balanceEarn,
+                "month" => $now->month
+            );
+
+
+            $report[] = array(
+                "data" => array_reverse($dataArray),
+                "name" => $envelope->name,
+                "envelope_id" => $envelope->id
+            );
+
+        }
+//        dd($report);
+        return $report;
+    }
 }
+/*
+    *  Type of envelopes:
+    *
+    *  1- balance earning
+    *  2- earning on envelope
+    *  3- balance expense
+    *  4- expense on envelope
+    *
+    */

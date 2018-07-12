@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<div class="col-12 col-sm-4">
+<div class="col-12 col-md-6 col-lg-4">
     <button type="button" class="btn btn-outline-primary btn-sm btn-block" data-toggle="modal" data-target="#exampleModalCenter">
          Adicionar envelope <i class="fa fa-plus-circle" style="font-weight: lighter;font-size: 10pt;"></i>
     </button>

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-12">
                 @if(session('flash_message'))
                     <div id="message-home" class="alert alert-info">{!! session('flash_message') !!}<a href="#"
                                                                                                                         class="close"

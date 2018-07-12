@@ -10,12 +10,12 @@
     <div class="row">
 
         @if(count($envelopes) == 0)
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <button class="btn btn-outline-info btn-sm btn-block" disabled>Nenhum envelope criado ainda!</button>
             </div>
         @endif
         @foreach($envelopes as $envelope)
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <button class="btn btn-outline-primary btn-sm btn-block" disabled>{{ $envelope->name }}:
                     <strong style="color: <?= ($envelope->balance <= 0) ? '#f2756a' : '#89e17a' ?>">R$: {{ $envelope->balance }}</strong>
                 </button>
@@ -30,7 +30,7 @@
 <hr>
 &nbsp;
 <div class="graphic-group">
-    <p><small>Últimos 30 dias</small></p>
+    <p><small>Suas movimentações nos últimos 30 dias:</small></p>
 
     <div class="row">
         @foreach($reportOne as $envelope)
@@ -83,6 +83,11 @@
                         <th colspan="2" style="height: 28px"></th>
                     </tr>
                 @endif
+                @if(count($shortHistory)==1)
+                    <tr>
+                        <th colspan="2" style="height: 56px"></th>
+                    </tr>
+                @endif
                 @if(count($shortHistory)==0)
                     <tr>
                         <th colspan="2" style="height: 84px">Opa! Nenhuma transação recente</th>
@@ -98,7 +103,8 @@
                 ?>
 
                 <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $percentspent }}%" aria-valuenow="{{ $percentspent }}" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="R$ {{ \App\Envelope::formatCurrency($shortHistorySpent) }}">{{ \App\Envelope::formatCurrency($shortHistorySpent) }}</div>
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $percentbalance }}%" aria-valuenow="{{ $percentbalance }}" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="R$ {{ \App\Envelope::formatCurrency($envelope->balance) }}">{{ \App\Envelope::formatCurrency($envelope->balance) }}</div>
+                    {{--todo: quando fizer um limitador de gastos quando não tiver saldo, remover esse if e deixar apenas bg-sucess na classe--}}
+                <div class="progress-bar <?= ($envelope->balance <= 0) ? 'bg-negative' : 'bg-success' ?>" role="progressbar" style="width: {{ $percentbalance }}%" aria-valuenow="{{ $percentbalance }}" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="R$ {{ \App\Envelope::formatCurrency($envelope->balance) }}">{{ \App\Envelope::formatCurrency($envelope->balance) }}</div>
             </div>
             <br>
         </div>

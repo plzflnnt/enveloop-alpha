@@ -55,3 +55,7 @@ p,a,h1,h2,h3,h4,h5,h6,button,html,body,tr,th{
 .progress .bg-success{
     background-color: #89e17a !important;
 }
+
+.progress .bg-negative{
+    background-color: #d60b0b !important;
+}
