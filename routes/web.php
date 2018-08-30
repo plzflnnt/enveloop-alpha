@@ -12,6 +12,9 @@
 */
 
 Route::get('/', function () {
+    if(Auth::check()){
+        return redirect('home');
+    }
     return view('welcome');
 });
 
@@ -22,5 +25,7 @@ Route::post('/new-envelope', 'EnvelopeController@createEnvelope')->name('home');
 Route::post('/new-earning', 'EnvelopeController@createEarning')->name('home');
 Route::post('/new-expense', 'EnvelopeController@createExpense')->name('home');
 Route::get('/undo-earning/{id}', 'EnvelopeController@undoEarning')->name('home');
+Route::get('/transactions/', 'EnvelopeController@transactions')->name('home');
+Route::get('/envelope/{id}', 'EnvelopeController@envelope')->name('home');
 
 

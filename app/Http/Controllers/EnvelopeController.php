@@ -43,13 +43,12 @@ class EnvelopeController extends Controller
         try{
             $envelope = new Envelope();
             $envelope->name = $request->name;
-            $envelope->style = $request->style;
             $envelope->user_id = Auth::id();
             $envelope->save();
         }catch (Exception $e){
             return $e->getMessage();
         }
-        return redirect('/home');
+        return redirect()->back();
     }
 
     public function createEarning(Request $request){
@@ -86,7 +85,7 @@ class EnvelopeController extends Controller
 //            return $e->getMessage();
 //        }
 
-        return redirect('/home');
+        return redirect()->back();
     }
     public function createExpense(Request $request){
 //        try{
@@ -114,13 +113,36 @@ class EnvelopeController extends Controller
 //        }catch (Exception $e){
 //            return $e->getMessage();
 //        }
-        return redirect('/home');
+        return redirect()->back();
     }
 
     public function undoEarning($id){
 
         $id = decrypt($id);
         Session::flash('flash_message', 'Você desfez a última aplicação');
-        return redirect('/home');
+        return redirect()->back();
+    }
+
+    public function transactions(){
+        $feed = Feed::where('feed.user_id', Auth::id())
+            ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
+            ->select('feed.*', 'envelopes.name as envelope')
+            ->orderBy('updated_at','desc')
+            ->paginate(30);
+        return view('transactions')->withFeed($feed);
+    }
+
+    public function envelope($id){
+        $id = decrypt($id);
+        $feed = Feed::where('user_id', Auth::id())
+            ->where('envelope_id', $id)
+            ->orderBy('created_at','dsc')
+            ->paginate(8);
+        return view('envelope')
+            ->withFeed($feed)
+            ->withBalance(Envelope::envelopeBalance($id))
+            ->withEnvelope(Envelope::find($id))
+            ->withReport(Envelope::userMonthsEnvelopeReport($id))
+            ->withUserBalance(User::updatedBalance(Auth::id()));
     }
 }

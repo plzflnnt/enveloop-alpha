@@ -46,14 +46,15 @@ class HomeController extends Controller
             ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
             ->select('feed.*', 'envelopes.name as envelope')
             ->orderBy('updated_at','desc')
-            ->paginate(20);
+            ->limit(5)
+            ->get();
 
         return view('home')
             ->withEnvelopes($envelopes)
             ->withUser($user)
             ->withBalance($balance)
             ->withFeed($feed)
-            ->withReportOne(Envelope::envelopesExpense())
-            ->withReportMonthByMonth(Envelope::userMothsReport());
+//            ->withReportOne(Envelope::envelopesExpense())
+            ->withReport(Envelope::userMonthsReport());
     }
 }

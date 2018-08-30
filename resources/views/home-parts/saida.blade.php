@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-3">
-                <div class="form-group input-earning-spense">
+                <div class="form-group input-money">
                     <input type="text" placeholder="Valor" class="form-control-sm form-control" name="value">
                 </div>
             </div>
