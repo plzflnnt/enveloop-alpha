@@ -83,6 +83,8 @@
                 </div>
 
                 <div class="links">
+                    <p>O método dos envelopes consiste em dividir sua renda em envelopes específicos, destinados a cada uma de suas despesas.</p>
+                    <p>O Enveloop organiza suas finanças baseado neste método, assim você tem uma visualização de onde vai o seu dinheiro sem a necessidade de tirá-lo do banco.</p>
                     <a href="//zafalon.com" target="_blank">Desenvolvido por PZaNeto</a>
                 </div>
             </div>

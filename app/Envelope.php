@@ -109,6 +109,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("envelope_id", $envelope->id)
                 ->whereMonth('created_at', $now->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -130,6 +131,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("envelope_id", $envelope->id)
                 ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -151,6 +153,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("envelope_id", $envelope->id)
                 ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -171,6 +174,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("envelope_id", $envelope->id)
                 ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -191,6 +195,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("envelope_id", $envelope->id)
                 ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -220,6 +225,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("user_id", Auth::id())
                 ->whereMonth('created_at', $now->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -241,6 +247,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("user_id", Auth::id())
                 ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -262,6 +269,7 @@ class Envelope extends Model
             $balanceEarn = 0;
             $feeds = Feed::where("user_id", Auth::id())
                 ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -281,7 +289,8 @@ class Envelope extends Model
             $balanceSpent = 0;
             $balanceEarn = 0;
             $feeds = Feed::where("user_id", Auth::id())
-            ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {
@@ -301,7 +310,8 @@ class Envelope extends Model
             $balanceSpent = 0;
             $balanceEarn = 0;
             $feeds = Feed::where("user_id", Auth::id())
-            ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereMonth('created_at', $now->subMonth()->month)
+                ->whereYear('created_at', $now->year)
                 ->get();
 
             foreach ($feeds as $feed) {

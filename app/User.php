@@ -42,6 +42,7 @@ class User extends Authenticatable
             ->where('user_id',$id)
             ->get();
         foreach ($earnings as $earning){
+//            dd($earning->value);
             $sum += $earning->value;
         }
         $envelopes = Envelope::where('user_id',$id)->get();

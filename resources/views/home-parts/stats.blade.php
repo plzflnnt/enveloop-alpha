@@ -2,6 +2,7 @@
         <div class="col-12 col-sm-10 offset-sm-1 col-lg-8 offset-lg-2">
             <p>Gastos e ganhos dos últimos meses</p>
             <canvas id="chart-months"></canvas>
+            <p class="text-center"><a href="{{ url('report') }}" class="btn btn-outline-primary">Relatórios</a></p>
         </div>
 </div>
 
