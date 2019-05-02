@@ -160,4 +160,9 @@ class EnvelopeController extends Controller
             ->withReport(Envelope::userMonthsEnvelopeReport($id))
             ->withUserBalance(User::updatedBalance(Auth::id()));
     }
+
+    public function report(){
+        return view('report')
+            ->withReport(Envelope::userMonthsFullReport());
+    }
 }

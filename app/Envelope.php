@@ -329,6 +329,269 @@ class Envelope extends Model
         return array_reverse($dataArray);
 
     }
+
+    public static function userMonthsFullReport()
+    {
+        $now = Carbon::now();
+        $now->setTimezone('America/Sao_Paulo');
+
+        $dataArray = [];
+        //esse mês
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth(4)->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+        );
+
+
+        //mes passado
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //mes retrasado
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //3 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //4 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //5 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //6 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //7 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //8 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //9 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //10 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+
+        //11 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
+        return array_reverse($dataArray);
+
+    }
 }
 /*
     *  Type of envelopes:
