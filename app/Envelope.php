@@ -100,232 +100,301 @@ class Envelope extends Model
     {
         $envelope = Envelope::where("id", $id)->first();
 
-            $now = Carbon::now();
-            $now->setTimezone('America/Sao_Paulo');
+        $now = Carbon::now();
+        $now->setTimezone('America/Sao_Paulo');
 
-            $dataArray = [];
-            //esse mês
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("envelope_id", $envelope->id)
-                ->whereMonth('created_at', $now->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        $dataArray = [];
+        //esse mês
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("envelope_id", $envelope->id)
+            ->whereMonth('created_at', $now->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 2) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4) {
-                    $balanceSpent += $feed->value;
-                }
+        foreach ($feeds as $feed) {
+            if ($feed->type == 2) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month,
-            );
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+        );
 
 
-            //mes passado
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("envelope_id", $envelope->id)
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        //mes passado
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("envelope_id", $envelope->id)
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 2) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4) {
-                    $balanceSpent += $feed->value;
-                }
-
+        foreach ($feeds as $feed) {
+            if ($feed->type == 2) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
 
-            //mes retrasado
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("envelope_id", $envelope->id)
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 2) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4) {
-                    $balanceSpent += $feed->value;
-                }
+        //mes retrasado
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("envelope_id", $envelope->id)
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 2) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
 
-            //3 meses atras
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("envelope_id", $envelope->id)
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        //3 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("envelope_id", $envelope->id)
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 2) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4) {
-                    $balanceSpent += $feed->value;
-                }
+        foreach ($feeds as $feed) {
+            if ($feed->type == 2) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
 
-            //4 meses atras
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("envelope_id", $envelope->id)
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        //4 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("envelope_id", $envelope->id)
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 2) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4) {
-                    $balanceSpent += $feed->value;
-                }
+        foreach ($feeds as $feed) {
+            if ($feed->type == 2) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month
+        );
 
         return array_reverse($dataArray);
     }
 
     public static function userMonthsReport()
     {
-            $now = Carbon::now();
-            $now->setTimezone('America/Sao_Paulo');
+        $now = Carbon::now();
+        $now->setTimezone('America/Sao_Paulo');
 
-            $dataArray = [];
-            //esse mês
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("user_id", Auth::id())
-                ->whereMonth('created_at', $now->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        $dataArray = [];
+        //esse mês
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 1) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4 || $feed->type == 3) {
-                    $balanceSpent += $feed->value;
-                }
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month,
-            );
+        }
 
-
-            //mes passado
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("user_id", Auth::id())
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
-
-            foreach ($feeds as $feed) {
-                if ($feed->type == 1) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4 || $feed->type == 3) {
-                    $balanceSpent += $feed->value;
-                }
-
+        $historyBalance = 0;
+        $historyFeedUntilToday = Feed::where("user_id", Auth::id())
+            ->where('created_at', '<=', $now)
+            ->get();
+        foreach ($historyFeedUntilToday as $feed) {
+            if ($feed->type == 1) {
+                $historyBalance += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $historyBalance -= $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
 
-            //mes retrasado
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("user_id", Auth::id())
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+            "historyBalance" => $historyBalance
+        );
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 1) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4 || $feed->type == 3) {
-                    $balanceSpent += $feed->value;
-                }
+
+        //mes passado
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
 
-            //3 meses atras
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("user_id", Auth::id())
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
-
-            foreach ($feeds as $feed) {
-                if ($feed->type == 1) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4 || $feed->type == 3) {
-                    $balanceSpent += $feed->value;
-                }
+        $historyBalance = 0;
+        $historyFeedUntilToday = Feed::where("user_id", Auth::id())
+            ->where('created_at', '<=', $now)
+            ->get();
+        foreach ($historyFeedUntilToday as $feed) {
+            if ($feed->type == 1) {
+                $historyBalance += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $historyBalance -= $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
 
-            //4 meses atras
-            $balanceSpent = 0;
-            $balanceEarn = 0;
-            $feeds = Feed::where("user_id", Auth::id())
-                ->whereMonth('created_at', $now->subMonth()->month)
-                ->whereYear('created_at', $now->year)
-                ->get();
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+            "historyBalance" => $historyBalance,
+        );
 
-            foreach ($feeds as $feed) {
-                if ($feed->type == 1) {
-                    $balanceEarn += $feed->value;
-                } elseif ($feed->type == 4 || $feed->type == 3) {
-                    $balanceSpent += $feed->value;
-                }
+        //mes retrasado
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
             }
-            $dataArray[] = array(
-                "spent" => $balanceSpent,
-                "earn" => $balanceEarn,
-                "month" => $now->month
-            );
+        }
+
+        $historyBalance = 0;
+        $historyFeedUntilToday = Feed::where("user_id", Auth::id())
+            ->where('created_at', '<=', $now)
+            ->get();
+        foreach ($historyFeedUntilToday as $feed) {
+            if ($feed->type == 1) {
+                $historyBalance += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $historyBalance -= $feed->value;
+            }
+        }
+
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+            "historyBalance" => $historyBalance
+        );
+
+        //3 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+
+        $historyBalance = 0;
+        $historyFeedUntilToday = Feed::where("user_id", Auth::id())
+            ->where('created_at', '<=', $now)
+            ->get();
+        foreach ($historyFeedUntilToday as $feed) {
+            if ($feed->type == 1) {
+                $historyBalance += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $historyBalance -= $feed->value;
+            }
+        }
+
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+            "historyBalance" => $historyBalance
+        );
+
+        //4 meses atras
+        $balanceSpent = 0;
+        $balanceEarn = 0;
+        $feeds = Feed::where("user_id", Auth::id())
+            ->whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->get();
+
+        foreach ($feeds as $feed) {
+            if ($feed->type == 1) {
+                $balanceEarn += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $balanceSpent += $feed->value;
+            }
+        }
+
+        $historyBalance = 0;
+        $historyFeedUntilToday = Feed::where("user_id", Auth::id())
+            ->where('created_at', '<=', $now)
+            ->get();
+        foreach ($historyFeedUntilToday as $feed) {
+            if ($feed->type == 1) {
+                $historyBalance += $feed->value;
+            } elseif ($feed->type == 4 || $feed->type == 3) {
+                $historyBalance -= $feed->value;
+            }
+        }
+
+        $dataArray[] = array(
+            "spent" => $balanceSpent,
+            "earn" => $balanceEarn,
+            "month" => $now->month,
+            "historyBalance" => $historyBalance
+        );
         return array_reverse($dataArray);
 
     }
@@ -590,6 +659,13 @@ class Envelope extends Model
             "month" => $now->month
         );
         return array_reverse($dataArray);
+
+    }
+
+//    Todo: fazer aqui uma posição do saldo no mês, ver quanto do saldo total tinha no fim do mês
+    public static function userMonthsReportBalanceSoFar()
+    {
+        $array = [];
 
     }
 }

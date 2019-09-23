@@ -13,7 +13,7 @@
             <div class="col-12">
                 <h2 class="text-center">{{ $envelope->name }}</h2>
                 <h4 class="text-center">
-                    <span style="color: <?= ($balance <= 0) ? '#f2756a' : '#89e17a' ?>">R$ {{ $balance }}</span>
+                    <span style="color: <?= ($balance <= 0) ? '#f2756a' : '#28a745' ?>">R$ {{ $balance }}</span>
                 </h4>
                 @include('envelope-parts.modal-envelope-actions')
             </div>

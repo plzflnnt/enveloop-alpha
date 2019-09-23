@@ -31,6 +31,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $envelopeNegative = false;
         $envelopes = Envelope::where('user_id',Auth::id())->get();
         $envelopesWithBalance = [];
         $envelopesIdArray = [];
@@ -38,13 +39,17 @@ class HomeController extends Controller
             $envelope->balance = Envelope::envelopeBalance($envelope->id);
             $envelopesWithBalance[] = $envelope;
             $envelopesIdArray[] = $envelope->id;
+            if($envelope->balance < 0){
+                $envelopeNegative = true;
+            }
         }
         $user = User::find(Auth::id());
         $balance = User::updatedBalance($user->id);
+        $grandBalance = User::grandBalance($balance,$envelopes);
 
         $feed = Feed::where('feed.user_id', Auth::id())
             ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
-            ->select('feed.*', 'envelopes.name as envelope')
+            ->select('feed.*', 'envelopes.name as envelope', 'envelopes.id as envelope_id')
             ->orderBy('updated_at','desc')
             ->limit(5)
             ->get();
@@ -54,6 +59,8 @@ class HomeController extends Controller
             ->withUser($user)
             ->withBalance($balance)
             ->withFeed($feed)
+            ->withGrandBalance($grandBalance)
+            ->withEnvelopeNegative($envelopeNegative)
 //            ->withReportOne(Envelope::envelopesExpense())
             ->withReport(Envelope::userMonthsReport());
     }

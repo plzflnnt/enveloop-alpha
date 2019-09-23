@@ -1,7 +1,7 @@
 //autohide notifications
 $(document).ready(function() {
-    $("#message-home").fadeTo(40000, 500).slideUp(500, function(){
-        $("#message-home").slideUp(500);
+    $(".auto-collapse").fadeTo(40000, 500).slideUp(500, function(){
+        $(".auto-collapse").slideUp(500);
     });
 });
 

@@ -1,13 +1,3 @@
-<!-- Button trigger modal -->
-<h5>Saldo: <span style="color: <?= ($balance <= 0) ? '#f2756a' : '#89e17a' ?>">R$ {{ $balance }}</span>&nbsp; <br class="d-block d-sm-none">
-    <a data-toggle="modal" data-target="#balanceModalEarning" style="font-size: 1rem" class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-arrow-up"></i>&nbsp;Ganho
-    </a>
-    <a data-toggle="modal" data-target="#balanceModalExpense" style="font-size: 1rem" class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-arrow-down"></i>&nbsp;Despesa
-    </a>
-</h5>
-
 <!-- Modal Earning -->
 <div class="modal fade" id="balanceModalEarning" tabindex="-1" role="dialog" aria-labelledby="balanceModalEarning"
      aria-hidden="true">
@@ -19,7 +9,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form-earning-spense needs-validation" method="post" action="{{ url('new-earning') }}" novalidate>
+            <form class="form-earning-spense needs-validation" method="post" action="{{ url('new-earning') }}"
+                  novalidate>
                 @csrf
                 <div class="modal-body">
                     <div class="earning-group">
@@ -71,7 +62,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form-earning-spense needs-validation" method="post" action="{{ url('new-expense') }}" novalidate>
+            <form class="form-earning-spense needs-validation" method="post" action="{{ url('new-expense') }}"
+                  novalidate>
                 @csrf
                 <div class="modal-body">
                     <div class="earning-group">

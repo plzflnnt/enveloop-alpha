@@ -4,7 +4,7 @@
         <th>Valor</th>
         <th>Descrição</th>
         <th class="d-none d-sm-block" {{$feed[0]->envelope == null ? "style=display:none!important":""}}>Categoria</th>
-        <th>Data</th>
+        <th colspan="2">Data</th>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +35,9 @@
             <td style="width: 33%{{$styleTwo}}">{{ $item->name }}</td>
             <td {{$item->envelope == null ? "style=display:none!important":""}} class="d-none d-sm-block">{{ $item->envelope }}</td>
             <td>{{ date('d/m/y H:i', strtotime($item->updated_at)) }}</td>
+            <td>
+                @include('home-parts.modal.transaction-table-actions')
+            </td>
         </tr>
     @endforeach
     </tbody>

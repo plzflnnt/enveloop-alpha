@@ -130,11 +130,12 @@ class EnvelopeController extends Controller
     public function undoEarning($id){
         $id = decrypt($id);
         try{
+            $deleted = Feed::where('id',$id)->where('user_id',Auth::id())->first();
             Feed::where('id',$id)->where('user_id',Auth::id())->delete();
         }catch (Exception $e){
 
         };
-        Session::flash('flash_message', 'Você desfez a última ação');
+        Session::flash('flash_message', 'Você apagou <b>'.$deleted->name.'</b>.');
         return redirect()->back();
     }
 

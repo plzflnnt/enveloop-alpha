@@ -63,4 +63,14 @@ class User extends Authenticatable
         $sum = number_format($sum, 2, ',', ' ');
         return $sum;
     }
+
+    public static function grandBalance($balance,$envelopes){
+        $totalSum = Envelope::formatNumber($balance);
+
+        foreach ($envelopes as $envelope) {
+            $x = Envelope::formatNumber($envelope->balance);
+            $totalSum += $x;
+        }
+        return Envelope::formatCurrency($totalSum);
+    }
 }
