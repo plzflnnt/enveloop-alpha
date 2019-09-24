@@ -95,6 +95,13 @@
         <main class="py-4">
             @yield('content')
         </main>
+        <footer class="container py-5">
+            <div class="row">
+                <div class="col-12">
+                    <small class="text-center">Enveloop App - Ver 0.2.3 <span class="badge badge-secondary">Beta</span> - <a href="{!! url('changelog') !!}">Change log</a></small>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <!-- Scripts -->

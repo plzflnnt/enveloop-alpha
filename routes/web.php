@@ -28,5 +28,6 @@ Route::get('/undo-earning/{id}', 'EnvelopeController@undoEarning')->name('home')
 Route::get('/transactions/', 'EnvelopeController@transactions')->name('home');
 Route::get('/report/', 'EnvelopeController@report')->name('home');
 Route::get('/envelope/{id}', 'EnvelopeController@envelope')->name('home');
+Route::get('/changelog', 'EnvelopeController@changelog')->name('home');
 
 

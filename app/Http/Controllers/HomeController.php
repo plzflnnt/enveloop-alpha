@@ -7,6 +7,7 @@ use App\EarningBalance;
 use App\Envelope;
 use App\Feed;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,9 @@ class HomeController extends Controller
             ->withGrandBalance($grandBalance)
             ->withEnvelopeNegative($envelopeNegative)
 //            ->withReportOne(Envelope::envelopesExpense())
-            ->withReport(Envelope::userMonthsReport());
+
+//            ->withReport(Envelope::userMonthsReport());
+            ->withReport(Envelope::userMonthly(Carbon::now(),13,-1));
+
     }
 }

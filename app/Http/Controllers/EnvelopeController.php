@@ -158,12 +158,18 @@ class EnvelopeController extends Controller
             ->withFeed($feed)
             ->withBalance(Envelope::envelopeBalance($id))
             ->withEnvelope(Envelope::find($id))
-            ->withReport(Envelope::userMonthsEnvelopeReport($id))
+
+//            ->withReport(Envelope::userMonthsEnvelopeReport($id))
+            ->withReport(Envelope::userMonthly(Carbon::now(),13,$id))
+
             ->withUserBalance(User::updatedBalance(Auth::id()));
     }
 
     public function report(){
         return view('report')
             ->withReport(Envelope::userMonthsFullReport());
+    }
+    public function changelog(){
+        return view('report-parts.changelog');
     }
 }

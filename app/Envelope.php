@@ -75,7 +75,7 @@ class Envelope extends Model
         return $arrayOfEnvelopes;
     }
 
-    //recebe um valor inteiro de dinheiro e retorna no formatado em string para view
+    //recebe um valor int 000000 retorna formatado em string 0 000,00
     public static function formatCurrency($value)
     {
         $value = $value / 100;
@@ -83,7 +83,7 @@ class Envelope extends Model
         return $value;
     }
 
-    //recebe um valor em string para view de dinheiro e retorna no formatado inteiro
+    //recebe um valor formatado em string 0 000,00 retorna int 000000
     public static function formatNumber($value)
     {
         $value = str_replace(' ', '', $value);
@@ -96,6 +96,7 @@ class Envelope extends Model
      * Função que retorna o balanço mês a mês de todos os evelopes do usuário em array
      * [report -> month, spent, earned, name, envelope_id]
      */
+//    relatório da página do envelope
     public static function userMonthsEnvelopeReport($id)
     {
         $envelope = Envelope::where("id", $id)->first();
@@ -214,6 +215,7 @@ class Envelope extends Model
         return array_reverse($dataArray);
     }
 
+//    relatório da home
     public static function userMonthsReport()
     {
         $now = Carbon::now();
@@ -399,6 +401,7 @@ class Envelope extends Model
 
     }
 
+//    relatório de um ano todo
     public static function userMonthsFullReport()
     {
         $now = Carbon::now();
@@ -662,12 +665,97 @@ class Envelope extends Model
 
     }
 
+    public static function userMonthly($fromDate, $toDate, $envelopeId){
+//        fromDate = data de início
+//        toDate = numero de meses para exibir
+//        envelopeId = id do envelope para filtrar, se -1, mostrar todos
+
+        $envelope = Envelope::where("id", $envelopeId)->first();
+        $fromDate->setTimezone('America/Sao_Paulo');
+        $dataArray = [];
+
+        while($toDate != 0 ){
+            $balanceSpent = 0;
+            $balanceEarn = 0;
+            $balanceProgression = 0;
+            $endMonth = clone $fromDate;
+            $endMonth->addMonth()->firstOfMonth();
+
+//            se tudo no feed
+            if ($envelopeId == -1){
+                $feeds = Feed::where("user_id", Auth::id())
+                    ->whereMonth('created_at', $fromDate->month)
+                    ->whereYear('created_at', $fromDate->year)
+                    ->get();
+
+                $completeFeed = Feed::where("user_id", Auth::id())
+                    ->where('created_at', '<=', $endMonth)
+                    ->get();
+
+                foreach ($feeds as $feed) {
+                    if ($feed->type == 1) {
+                        $balanceEarn += $feed->value;
+                    } elseif ($feed->type == 4 || $feed->type == 3) {
+                        $balanceSpent += $feed->value;
+                    }
+                }
+                foreach ($completeFeed as $feed) {
+                    if ($feed->type == 1) {
+                        $balanceProgression += $feed->value;
+                    } elseif ($feed->type == 4 || $feed->type == 3) {
+                        $balanceProgression -= $feed->value;
+                    }
+                }
+
+            }else{
+//                ou envelope específico
+                $feeds = Feed::where("envelope_id", $envelope->id)
+                    ->whereMonth('created_at', $fromDate->month)
+                    ->whereYear('created_at', $fromDate->year)
+                    ->get();
+
+                $completeFeed = Feed::where("envelope_id", $envelope->id)
+                    ->where('created_at', '<=', $fromDate)
+                    ->get();
+
+                foreach ($feeds as $feed) {
+                    if ($feed->type == 2) {
+                        $balanceEarn += $feed->value;
+                    } elseif ($feed->type == 4) {
+                        $balanceSpent += $feed->value;
+                    }
+                }
+                foreach ($completeFeed as $feed) {
+                    if ($feed->type == 2) {
+                        $balanceProgression += $feed->value;
+                    } elseif ($feed->type == 4) {
+                        $balanceProgression -= $feed->value;
+                    }
+                }
+
+            }
+
+            $dataArray[] = array(
+                "spent" => $balanceSpent,
+                "earn" => $balanceEarn,
+                "month" => $fromDate->month,
+                "balanceProgression" => $balanceProgression
+            );
+            $fromDate->subMonth();
+            $toDate--;
+        }
+        return array_reverse($dataArray);
+    }
+
+
 //    Todo: fazer aqui uma posição do saldo no mês, ver quanto do saldo total tinha no fim do mês
     public static function userMonthsReportBalanceSoFar()
     {
         $array = [];
 
     }
+
+
 }
 /*
     *  Type of envelopes:
