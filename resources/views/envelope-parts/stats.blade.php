@@ -87,7 +87,48 @@
                     @endforeach
                 ],
                 borderWidth: 1
-            }]
+            },
+                    <?
+                    $media = 0;
+                    foreach ($report as $data){
+                        $media += $data["earn"];
+                    }
+                    ?>
+                {
+                    label: 'Média de Investimento',
+                    data: [
+                        @foreach($report as $data)
+                        {{$media/1200}},
+                        @endforeach
+                    ],
+                    borderColor:'rgba(1, 255, 1, 1)',
+                        backgroundColor:'rgba(1, 255, 1, 0)',
+
+                    // Changes this dataset to become a line
+                    type: 'line'
+                },
+
+
+                    <?
+                    $media = 0;
+                    foreach ($report as $data){
+                        $media += $data["spent"];
+                    }
+                    ?>
+
+                {
+                    label: 'Média de Gasto',
+                    data: [
+                        @foreach($report as $data)
+                        {{$media/1200}},
+                        @endforeach
+                    ],
+                    borderColor:'rgba(255, 1, 1, 1)',
+                        backgroundColor:'rgba(1, 255, 1, 0)',
+
+                    // Changes this dataset to become a line
+                    type: 'line'
+                }]
         },
         options: {
             scales: {
