@@ -13,10 +13,10 @@ class Feed extends Model
     public static function shortHistory($envelopeId){
 
         $entryArray = Feed::where('feed.envelope_id', $envelopeId)
-            ->where('feed.created_at', '>', Carbon::now()->subDays(30))
+            ->where('feed.valid_at', '>', Carbon::now()->subDays(30))
             ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
             ->select('feed.*', 'envelopes.name as envelope')
-            ->orderBy('updated_at','desc')
+            ->orderBy('valid_at','desc')
             ->limit(3)
             ->get();
         return $entryArray;
@@ -24,7 +24,7 @@ class Feed extends Model
 
     public static function shortHistoryExpenses($envelopeId){
         $entryArray = Feed::where('envelope_id', $envelopeId)
-            ->where('created_at', '>', Carbon::now()->subDays(30))
+            ->where('valid_at', '>', Carbon::now()->subDays(30))
             ->where('type', 4)
             ->get();
         $sum = 0;

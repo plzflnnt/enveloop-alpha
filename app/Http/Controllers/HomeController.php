@@ -51,7 +51,7 @@ class HomeController extends Controller
         $feed = Feed::where('feed.user_id', Auth::id())
             ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
             ->select('feed.*', 'envelopes.name as envelope', 'envelopes.id as envelope_id')
-            ->orderBy('updated_at','desc')
+            ->orderBy('created_at','desc')
             ->limit(5)
             ->get();
 

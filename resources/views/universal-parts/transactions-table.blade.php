@@ -34,7 +34,7 @@
                 &nbsp;R$ {{ \App\Envelope::formatCurrency($item->value) }}</td>
             <td style="width: 33%{{$styleTwo}}">{{ $item->name }}</td>
             <td {{$item->envelope == null ? "style=display:none!important":""}} class="d-none d-sm-block">{{ $item->envelope }}</td>
-            <td>{{ date('d/m/y H:i', strtotime($item->updated_at)) }}</td>
+            <td>{{ date('d/m/y', strtotime($item->valid_at)) }}</td>
         </tr>
     @endforeach
     </tbody>

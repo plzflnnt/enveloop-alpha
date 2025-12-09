@@ -51,81 +51,83 @@ class EnvelopeController extends Controller
         return redirect()->back();
     }
 
-    public function createEarning(Request $request){
-//        try{
-            if($request->envelope_id == 'sd'){
-                //in case is a balance earning
-                $feed = new Feed();
-                $value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $feed->value = preg_replace("/[^A-Za-z0-9]/", "",$value);
-                $feed->user_id = Auth::id();
-                $feed->envelope_id = 1;
-                $feed->type = 1;
-                $feed->name = $request->name;
-                $feed->valid_at = Carbon::now();
-                $feed->save();
+    private function storeFeed(Request $request, $config)
+    {
+        $feed = new Feed();
 
-                $mensagem = 'Você inseriu '.$request->value.' ao seu saldo não alocado. <a href="'.url('undo-earning/'.encrypt($feed->id)).'" class="alert-link">Desfazer</a>';
-                Session::flash('flash_message', $mensagem);
-            }else{
-                //in case is an envelope earning
-                $feed = new Feed();
-                $value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $feed->value = preg_replace("/[^A-Za-z0-9]/", "",$value);
-                $feed->envelope_id = $request->envelope_id;
-                $feed->user_id = Auth::id();
-                $feed->type = 2;
-                $feed->name = $request->name;
-                $feed->valid_at = Carbon::now();
-                $feed->save();
+        // Normalizar o valor
+        $value = str_replace(['.', ',', '$', 'R'], '', $request->value);
+        $feed->value = preg_replace("/[^A-Za-z0-9]/", "", $value);
 
-                $envelope = Envelope::find($request->envelope_id);
-                $mensagem = 'Você inseriu '.$request->value.' ao envelope '.$envelope->name.'. <a href="'.url('undo-earning/'.encrypt($feed->id)).'" class="alert-link">Desfazer</a>';
-                Session::flash('flash_message', $mensagem);
-            }
-//        }catch (Exception $e){
-//            return $e->getMessage();
-//        }
+        // Identifica se é saldo ou envelope
+        $isBalance = ($request->envelope_id == 'sd');
+
+        $feed->user_id = Auth::id();
+        $feed->envelope_id = $isBalance ? 1 : $request->envelope_id;
+        $feed->type = $isBalance ? $config['balance_type'] : $config['envelope_type'];
+        $feed->name = $request->name;
+
+        // VALID_AT (opcional)
+        $feed->valid_at = $request->valid_at
+            ? Carbon::parse($request->valid_at)->startOfDay()
+            : Carbon::now();
+
+        $feed->save();
+
+        // Mensagem de sucesso
+        if ($isBalance) {
+            $message = $config['success_balance']($request, $feed);
+        } else {
+            $envelope = Envelope::find($request->envelope_id);
+            $message = $config['success_envelope']($request, $feed, $envelope);
+        }
+
+        Session::flash('flash_message', $message);
 
         return redirect()->back();
     }
-    public function createExpense(Request $request){
-//        try{
-            if($request->envelope_id == 'sd'){
-                //in case is a balance expense
-                $feed = new Feed();
-                $value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $feed->value = preg_replace("/[^A-Za-z0-9]/", "",$value);
-                $feed->user_id = Auth::id();
-                $feed->envelope_id = 1;
-                $feed->type = 3;
-                $feed->name = $request->name;
-                $feed->valid_at = Carbon::now();
-                $feed->save();
 
-                $mensagem = 'Você inseriu um gasto de '.$request->value.' ao saldo <a href="'.url('undo-earning/'.encrypt($feed->id)).'" class="alert-link">Desfazer</a>';
-                Session::flash('flash_message', $mensagem);
-            }else{
-                //in case is an envelope expense
-                $feed = new Feed();
-                $value = str_replace(array('.', ',', '$', 'R'), '' , $request->value);
-                $feed->value = preg_replace("/[^A-Za-z0-9]/", "",$value);
-                $feed->envelope_id = $request->envelope_id;
-                $feed->user_id = Auth::id();
-                $feed->type = 4;
-                $feed->name = $request->name;
-                $feed->valid_at = Carbon::now();
-                $feed->save();
 
-                $envelope = Envelope::find($request->envelope_id);
-                $mensagem = 'Você inseriu um gasto de '.$request->value.' ao envelope '.$envelope->name.'. <a href="'.url('undo-earning/'.encrypt($feed->id)).'" class="alert-link">Desfazer</a>';
-                Session::flash('flash_message', $mensagem);
+    public function createEarning(Request $request)
+    {
+        return $this->storeFeed($request, [
+            'balance_type' => 1,   // tipo para saldo
+            'envelope_type' => 2,  // tipo para envelope
+            'success_balance' => function ($request, $feed) {
+                return 'Você inseriu ' . $request->value . 
+                       ' ao seu saldo não alocado. <a href="' . 
+                       url('undo-earning/' . encrypt($feed->id)) . 
+                       '" class="alert-link">Desfazer</a>';
+            },
+            'success_envelope' => function ($request, $feed, $envelope) {
+                return 'Você inseriu ' . $request->value . ' ao envelope ' . 
+                       $envelope->name . '. <a href="' . 
+                       url('undo-earning/' . encrypt($feed->id)) . 
+                       '" class="alert-link">Desfazer</a>';
             }
-//        }catch (Exception $e){
-//            return $e->getMessage();
-//        }
-        return redirect()->back();
+        ]);
     }
+
+    public function createExpense(Request $request)
+    {
+        return $this->storeFeed($request, [
+            'balance_type' => 3,   // tipo para saldo
+            'envelope_type' => 4,  // tipo para envelope
+            'success_balance' => function ($request, $feed) {
+                return 'Você inseriu um gasto de ' . $request->value . 
+                       ' ao saldo <a href="' . 
+                       url('undo-earning/' . encrypt($feed->id)) . 
+                       '" class="alert-link">Desfazer</a>';
+            },
+            'success_envelope' => function ($request, $feed, $envelope) {
+                return 'Você inseriu um gasto de ' . $request->value . 
+                       ' ao envelope ' . $envelope->name . '. <a href="' . 
+                       url('undo-earning/' . encrypt($feed->id)) . 
+                       '" class="alert-link">Desfazer</a>';
+            }
+        ]);
+    }
+
 
     public function undoEarning($id){
         $id = decrypt($id);
@@ -143,7 +145,7 @@ class EnvelopeController extends Controller
         $feed = Feed::where('feed.user_id', Auth::id())
             ->join('envelopes', 'feed.envelope_id', '=', 'envelopes.id')
             ->select('feed.*', 'envelopes.name as envelope')
-            ->orderBy('updated_at','desc')
+            ->orderBy('valid_at','desc')
             ->paginate(30);
         return view('transactions')->withFeed($feed);
     }
@@ -152,7 +154,7 @@ class EnvelopeController extends Controller
         $id = decrypt($id);
         $feed = Feed::where('user_id', Auth::id())
             ->where('envelope_id', $id)
-            ->orderBy('created_at','dsc')
+            ->orderBy('valid_at','dsc')
             ->paginate(8);
         return view('envelope')
             ->withFeed($feed)

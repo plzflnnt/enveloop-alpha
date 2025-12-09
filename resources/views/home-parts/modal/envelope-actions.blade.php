@@ -37,7 +37,11 @@
                                         Informe o valor
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <input type="date" class="form-control-sm form-control" name="valid_at">
+                                </div>
                             </div>
+                            
                             <input type="hidden" name="envelope_id" value="{{$envelope->id}}">
                         </div>
                     </div>
@@ -87,6 +91,12 @@
                                     <div class="invalid-feedback">
                                         Informe o valor
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="date" class="form-control-sm form-control" 
+                                           name="valid_at">
                                 </div>
                             </div>
                             <input type="hidden" name="envelope_id" value="{{$envelope->id}}">
